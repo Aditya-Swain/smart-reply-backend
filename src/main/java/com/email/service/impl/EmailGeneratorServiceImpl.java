@@ -47,7 +47,7 @@ public class EmailGeneratorServiceImpl implements EmailGeneratorService {
                 .retrieve()
                 .bodyToMono(String.class)
                 .block();
-
+    System.out.println(extractResponseContent(response));
 //      extract response  return
         return extractResponseContent(response);
     }
@@ -71,11 +71,12 @@ public class EmailGeneratorServiceImpl implements EmailGeneratorService {
 
     private String buildPrompt(EmailRequest emailRequest){
         StringBuilder prompt = new StringBuilder();
-        prompt.append("Generate a professional").append(emailRequest.getPlatform()).append("reply for the following content. Please do not generate subject header.");
+        prompt.append("Generate a professional ").append(emailRequest.getPlatform()).append(" reply for the following content. Please do not generate subject header and other extra things.Avoid generating multiple types, generate only one type, because I am using the response directly.");
         if(emailRequest.getTone() != null && !emailRequest.getTone().isEmpty()){
             prompt.append("\n Please use a ").append(emailRequest.getTone()).append(" tone");
         }
-        prompt.append("\n Original Email: \n").append(emailRequest.getEmailContent());
+        prompt.append("\n Original ").append(emailRequest.getPlatform()).append(" Message: \n").append(emailRequest.getEmailContent());
+        System.out.println(prompt.toString());
         return prompt.toString();
     }
 }
